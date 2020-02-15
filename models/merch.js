@@ -10,9 +10,18 @@ class Merch extends Model {
   static editMerch = async merch =>
     await Merch.query()
       .findById(merch.id)
-      .patch({ ...merch });
+      .patch({
+        ...merch,
+        updated_time: Merch.query().findById(merch.id).updated_time
+      });
 
   static deleteMerch = async idx => Merch.query().deleteById(idx);
+
+  static addNewMerch = async merch =>
+    await Merch.query().insert({
+      ...merch,
+      avatar_url: 'some_url'
+    });
 }
 
 module.exports = Merch;
