@@ -17,11 +17,7 @@ class Merch extends Model {
 
   static deleteMerch = async idx => Merch.query().deleteById(idx);
 
-  static addNewMerch = async merch =>
-    await Merch.query().insert({
-      ...merch,
-      avatar_url: 'some_url'
-    });
+  static addNewMerch = async merch => await Merch.query().insert(merch);
 }
 
 module.exports = Merch;

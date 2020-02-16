@@ -4,6 +4,7 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const uuidv4 = require('uuid/v4');
 const fileUpload = require('express-fileupload');
+const path = require('path');
 
 const { Mentor, Merch } = require('./models');
 const config = require('./config');
@@ -16,19 +17,17 @@ app.use(cors());
 app.use(fileUpload());
 app.use('/api/v1', merchRouter);
 
-// let mentor = {
-//   id: 43,
-//   name: 'Misha',
-//   phone: '1234567890',
-//   email: 'misha@gmail.com',
-//   information: 'qwerty',
-//   created_time: '2020-02-08T20:20:50.670Z',
-//   updated_time: '2020-02-08T20:20:50.670Z'
-// };
-// let aaa = Mentor.getAll().then(res => console.log(res));
-
 app.get('/', (req, res) => {
   res.send('Hello world!');
+});
+
+app.get('/api/v1/image/:folder/:file', (req, res) => {
+  const { folder, file } = req.params;
+  try {
+    res.sendFile(path.join(__dirname, 'uploads', folder, file));
+  } catch {
+    res.json({ found: false });
+  }
 });
 
 app.post('/login', (req, res) => {

@@ -1,6 +1,8 @@
 const express = require('express');
 const { Merch } = require('../models');
 const multer = require('multer');
+const path = require('path');
+
 const upload = multer();
 
 const merchRouter = express.Router();
@@ -25,20 +27,28 @@ merchRouter.post('/edit-merch', (req, res) => {
     });
 });
 
-merchRouter.post('/add-new-merch', upload.single('myFile'), (req, res) => {
-  console.log(req.files);
-  return res.json({ ok: true });
-  // Merch.addNewMerch(req.body)
-  //   .then(data => {
-  //     return res.json({
-  //       success: true,
-  //       payload: 'Edited'
-  //     });
-  //   })
-  //   .catch(err => {
-  //     console.log(err);
-  //     return res.status(500).send('An error occured unexpectadly');
-  //   });
+merchRouter.post('/add-merch-photo', upload.single('photo'), (req, res) => {
+  req.files.photo
+    .mv(path.join(__dirname, `../uploads/merch/${req.files.photo.name}`))
+    .then(saved => {
+      return res.json({ ok: true });
+    })
+    .catch(err => console.log(err));
+});
+
+merchRouter.post('/add-new-merch', (req, res) => {
+  console.log(req.body);
+  Merch.addNewMerch(req.body)
+    .then(data => {
+      return res.json({
+        success: true,
+        payload: 'Edited'
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(500).send('An error occured unexpectadly');
+    });
 });
 
 merchRouter.delete('/delete-merch', (req, res) => {
