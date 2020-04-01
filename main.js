@@ -9,6 +9,7 @@ const path = require('path');
 const { Mentor, Merch } = require('./models');
 const config = require('./config');
 const merchRouter = require('./routes/merch');
+const newsRouter = require('./routes/news');
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use(cors());
 app.use(fileUpload());
 app.use('/api/v1', merchRouter);
+app.use('/api/v1', newsRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello world!');

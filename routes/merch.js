@@ -42,7 +42,7 @@ merchRouter.post('/add-new-merch', (req, res) => {
     .then(data => {
       return res.json({
         success: true,
-        payload: 'Edited'
+        payload: 'Added'
       });
     })
     .catch(err => {
